@@ -2,14 +2,31 @@
    1. Создайте функцию createButton(). Необходимо, чтобы эта функция осуществила вставку в body тег button с текстом: "Удали меня".
       При клике по button удалить этот button.
 */
-export function createButton() {}
+export function createButton() {
+    const button = document.createElement('button');
+    button.innerHTML = 'Удали меня';
+    document.body.append(button);
+    button.addEventListener('click', () => button.remove());
+}
 
 /*
    2. Создайте функцию createArrList(arr), в которую передается 1 параметр: arr - массив строк.
       Функция выводит этот массив в виде маркированного списка внутри тега body.
       При наведении курсора мыши на элемент списка у этого элемента создается атрибут title, в котором записан его текст.
 */
-export function createArrList(arr) {}
+export function createArrList(arr) {
+    const ul = document.createElement('ul');
+
+    arr.forEach(function (item, i) {
+        const li = document.createElement('li');
+        ul.appendChild(li);
+        li.innerHTML = item;
+    });
+    document.body.append(ul);
+    document.addEventListener('mouseover', function (event) {
+        event.target.title = event.target.innerHTML;
+    });
+}
 
 /*
    3. Создайте функцию createLink(), которая сгенерирует следующую разметку и вставит ее в body:
@@ -19,7 +36,23 @@ export function createArrList(arr) {}
       При первом клике по ссылке в конец ее текста через пробел дописывается ее href.
       При следующем клике происходит действие по умолчанию (переход по ссылке в текущей вкладке).
 */
-export function createLink() {}
+export function createLink() {
+    let flag = 1;
+    const a = document.createElement('a');
+    a.innerHTML = 'tensor';
+    a.href = 'https://tensor.ru/';
+    document.body.append(a);
+
+    function viewAction(event) {
+        if (flag == 1) {
+            event.preventDefault();
+            a.innerHTML += ' https://tensor.ru/';
+            flag = 2;
+        }
+    }
+
+    a.addEventListener('click', viewAction);
+}
 
 /*
    4. Создайте функцию createList(), которая сгенерирует следующую разметку и вставит ее в body:
@@ -33,4 +66,26 @@ export function createLink() {}
       При клике по button в конец списка добавляется новый элемент li с текстом: "Пункт".
       Клик по новому li также добавляет восклицательный знак в конец текста.
 */
-export function createList() {}
+export function createList() {
+    const ul = document.createElement('ul');
+    const li = document.createElement('li');
+    ul.appendChild(li);
+    li.innerHTML = 'Пункт';
+    const button = document.createElement('button');
+    button.innerHTML = 'Добавить пункт';
+    document.body.append(ul);
+    document.body.append(button);
+
+    li.addEventListener('click', function (event) {
+        li.innerHTML += '!';
+    });
+
+    button.addEventListener('click', function (event) {
+        const li = document.createElement('li');
+        li.innerHTML = 'Пункт';
+        ul.appendChild(li);
+        li.addEventListener('click', function (event) {
+            li.innerHTML += '!';
+        });
+    });
+}
